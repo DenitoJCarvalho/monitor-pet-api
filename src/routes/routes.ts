@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
-import { allLogins, newLogin, loginOne } from '../controller/loginController';
+import { getLogins, addLogin, loginOne, updateLogin, deleteLogin } from '../controller/loginController';
 
 export const route = Router();
 
-route.get('/login', allLogins);
+route.get('/login', getLogins);
 route.get('/login/:id', loginOne);
-route.post('/login/cadastrar', newLogin);
+route.post('/login/cadastrar', addLogin);
+route.put('/login/atualizar/:id', updateLogin);
+route.delete('/login/deletar/:id', deleteLogin)
