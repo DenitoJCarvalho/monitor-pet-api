@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, SchemaType } from 'mongoose';
 
 import { ILogin } from '../interfaces/ILogin';
 
@@ -12,7 +12,9 @@ import { ILogin } from '../interfaces/ILogin';
 const loginSchema = new Schema<ILogin>({
   name: { type: String, required: true },
   password: { type: String, required: true },
-  email: { type: String, required: true }
+  email: { type: String, required: true },
+  profile: { type: String, required: true },
+  initialDate: { type: Date }
 });
 
 const Login = mongoose.model('Login', loginSchema);

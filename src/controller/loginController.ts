@@ -34,7 +34,7 @@ export const getLogins = async (request: any, response: any) => {
  * @param id 
  * @returns { Id, name, password, email}
  */
-export const loginOne = async (request: any, response: any) => {
+export const getLoginOne = async (request: any, response: any) => {
   try {
     await Login
       .findOne({ _id: request.params.id })
@@ -65,11 +65,15 @@ export const addLogin = async (request: any, response: any) => {
     const name: string = await request.body.name;
     const password: string = await request.body.password;
     const email: string = await request.body.email;
+    const profile: string = await request.body.profile;
+    const initalDate: string = Date.now().toString();
 
     const login = new Login();
     login.name = name;
     login.password = password;
     login.email = email;
+    login.profile = profile;
+    login.initialDate = initalDate;
 
     await login
       .save()
@@ -133,6 +137,11 @@ export const updateLogin = async (request: any, response: any) => {
   }
 }
 
+/**
+ * @param request 
+ * @param response 
+ * @returns { message, res }
+ */
 export const deleteLogin = async (request: any, response: any) => {
   try {
     await Login

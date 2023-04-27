@@ -1,3 +1,5 @@
+import { Date } from "mongoose";
+
 /**
  * @interface ILogin
  * @prop id
@@ -9,5 +11,7 @@ export interface ILogin {
   id?: string,
   name: string,
   password: string,
-  email: string
+  email: string,
+  profile: string,
+  initialDate?: string
 }
