@@ -27,6 +27,23 @@ export const allLogins = async (request: any, response: any) => {
 
 }
 
+export const loginOne = async (request: any, response: any) => {
+  try {
+    await Login
+      .findOne({ _id: request.params.id })
+      .then(res => {
+        return response.status(200).json(res);
+      }).catch(error => {
+        return response.status(400).json({
+          message: 'Login não encontrado.',
+          error
+        })
+      });
+  } catch (error) {
+    return await response.status(404).json({ message: 'Não foi possível encontrar os dados.' });
+  }
+}
+
 /**
  * 
  * @param request 
