@@ -4,14 +4,38 @@ import { connectDatabase as db } from '../database/mongodb';
 
 import { Login } from '../models/LoginModel';
 
-export const verifyLogin = async (request: any, response: any) => {
-  const name: string = request.body.name;
-  const password: string = request.body.password;
-  return await response.json({
-    name, password
-  });
+/**
+ * 
+ * @param request 
+ * @param response
+ * @returns todos os logins
+ */
+export const allLogins = async (request: any, response: any) => {
+  try {
+    await Login
+      .find()
+      .then(res => {
+        return response
+          .status(200)
+          .json({ logins: res })
+      }).catch();
+  } catch (error) {
+    return await response
+      .status(404)
+      .json({ message: `Não foi possível carregar a página ${error}` });
+  }
+
 }
 
+/**
+ * 
+ * @param request 
+ * @param response.
+ * @prop name
+ * @prop password
+ * @prop email 
+ * @returns Dados salvos com sucesso.
+ */
 export const newLogin = async (request: any, response: any) => {
   try {
     const name: string = await request.body.name;

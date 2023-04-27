@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import { verifyLogin, newLogin } from '../controller/loginController';
+import { allLogins, newLogin } from '../controller/loginController';
 
 export const route = Router();
 
-route.get('/login', verifyLogin);
+route.get('/login', allLogins);
 route.post('/login/cadastrar', newLogin);
