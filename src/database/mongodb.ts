@@ -1,11 +1,22 @@
-import { connect } from 'mongoose';
-import { Enviroment } from '../environment/keys';
+import { connect, createConnection } from 'mongoose';
+import { env } from '../environment/env';
+import { config } from 'dotenv';
 
+config({
+  path: '../../env'
+});
 
 //mongodb://localhost:27017/mystudies
+//Enviroment.STREAM_MONGODB
 export function connectDatabase() {
-  connect(Enviroment.STREAM_MONGODB)
-    .then(res => console.log(`Mongodb connected in cloud.`))
-    .catch(error => console.error(`No posible connect ${error}`));
+  try {
+    connect(env.MONGODB_URI)
+      .then(res => {
+        console.log(`Mongodb connected.`)
+      })
+      .catch(error => console.error(`No posible connect - ${error}`));
+  } catch (error) {
+    return error;
+  }
 }
 

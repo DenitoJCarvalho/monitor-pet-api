@@ -2,4 +2,4 @@
 
 *.env
 
-keys.ts
+env.ts
