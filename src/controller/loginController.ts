@@ -1,6 +1,5 @@
-import { response, request } from 'express';
 
-import { connectDatabase as db } from '../database/mongodb';
+import { Request, Response } from 'express';
 
 import { Login } from '../models/LoginModel';
 
@@ -10,19 +9,18 @@ import { Login } from '../models/LoginModel';
  * @param response
  * @returns { "logins": []}
  */
-export const getLogins = async (request: any, response: any) => {
+export const getLogins = async (request: Request, response: Response) => {
   try {
     await Login
       .find()
       .then(res => {
-        return response
-          .status(200)
-          .json({ logins: res })
-      }).catch();
+        return response.status(200).json({ logins: res })
+      })
+      .catch(error => {
+        return response.status(400).json({ message: `Não há dados para ser carregados. - ${error}` })
+      });
   } catch (error) {
-    return await response
-      .status(404)
-      .json({ message: `Não foi possível carregar a página ${error}` });
+    return await response.status(404).json({ message: `Não foi possível carregar a página ${error}` });
   }
 
 }
@@ -34,7 +32,7 @@ export const getLogins = async (request: any, response: any) => {
  * @param id 
  * @returns { Id, name, password, email}
  */
-export const getLoginOne = async (request: any, response: any) => {
+export const getLoginOne = async (request: Request, response: Response) => {
   try {
     await Login
       .findOne({ _id: request.params.id })
@@ -51,6 +49,66 @@ export const getLoginOne = async (request: any, response: any) => {
   }
 }
 
+export const getLoginAdmin = async (request: Request, response: Response) => {
+  try {
+    await Login.find({ profile: 'admin' })
+      .then(res => {
+        return response.status(200).json({ admins: res })
+      })
+      .catch(error => {
+        return response.status(400).json({ message: `Admnistradores não encontrado. - ${error}` })
+      });
+
+  }
+  catch (error) {
+    await response.status(404).json({
+      message: `Administradores não encontrados.`,
+      error
+    })
+  }
+}
+
+export const getLoginUsers = async (request: Request, response: Response) => {
+  try {
+    await Login.find({ profile: 'user' })
+      .then(res => {
+        return response.status(200).json({ users: res })
+      })
+      .catch(error => {
+        return response.status(400).json({ message: `Admnistradores não encontrado. - ${error}` })
+      });
+
+  }
+  catch (error) {
+    await response.status(404).json({
+      message: `Administradores não encontrados.`,
+      error
+    })
+  }
+}
+
+export const getLoginForNameAndPass = async (request: Request, response: Response) => {
+  try {
+    const email: string = await request.params.email;
+
+    await Login
+      .find({ email: email })
+      .then(res => {
+        return response.status(200).json({ user: res })
+      })
+      .catch(error => {
+        return response.status(400).json({ message: `Login inválido`, error })
+      })
+
+  } catch (error) {
+    return await response
+      .status(404)
+      .json({
+        message: `Não foi possível encontrar login.`
+      });
+  }
+}
+
 /**
  * 
  * @param request 
@@ -60,7 +118,7 @@ export const getLoginOne = async (request: any, response: any) => {
  * @prop email 
  * @returns {name, password, email}
  */
-export const addLogin = async (request: any, response: any) => {
+export const addLogin = async (request: Request, response: Response) => {
   try {
     const name: string = await request.body.name;
     const password: string = await request.body.password;
@@ -105,7 +163,7 @@ export const addLogin = async (request: any, response: any) => {
  * @returns {
  * name, password, email}
  */
-export const updateLogin = async (request: any, response: any) => {
+export const updateLogin = async (request: Request, response: Response) => {
   try {
     await Login
       .findByIdAndUpdate(request.params.id, {
@@ -142,7 +200,7 @@ export const updateLogin = async (request: any, response: any) => {
  * @param response 
  * @returns { message, res }
  */
-export const deleteLogin = async (request: any, response: any) => {
+export const deleteLogin = async (request: Request, response: Response) => {
   try {
     await Login
       .findByIdAndDelete(request.params.id)

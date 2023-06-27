@@ -4,7 +4,7 @@
   "description": "projeto realizado na faculdade - refatoracao",
   "main": "dist/index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts && npx tsc && node dist/index.js --watch"
+    "dev": "ts-node-dev src/index.ts && npx tsc && node dist/index.js --watch"
   },
   "repository": {
     "type": "git",

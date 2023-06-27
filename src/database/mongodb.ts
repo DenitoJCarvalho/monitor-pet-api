@@ -10,7 +10,7 @@ config({
 //Enviroment.STREAM_MONGODB
 export function connectDatabase() {
   try {
-    connect(env.MONGODB_URI)
+    connect(env.MONGODB_LOCAL)
       .then(res => {
         console.log(`Mongodb connected.`)
       })
